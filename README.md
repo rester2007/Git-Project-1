@@ -8,6 +8,12 @@ The project begins with a clean Linux environment, configures a Git identity, cl
 
 This is a project-based training environment designed to practice version control, Linux command-line operations, secure GitHub authentication, and technical documentation. It is not presented as a production deployment.
 
+## Medium Article
+
+Read the complete project walkthrough, Git workflow, SSH authentication details, troubleshooting notes, validation steps, and lessons learned:
+
+[Git: Building a Complete Git and GitHub Workflow with WSL 2](https://medium.com/@rester.mcglown/git-building-a-complete-git-and-github-workflow-with-wsl-2-23e14614ccc2)
+
 ## Architecture
 
 ```mermaid
