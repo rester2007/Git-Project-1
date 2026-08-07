@@ -8,22 +8,15 @@ The project begins with a clean Linux environment, configures a Git identity, cl
 
 This is a project-based training environment designed to establish the version-control foundation used in DevOps and cloud engineering. It is intentionally small so that each Git state and command can be examined directly.
 
-## Medium Article
-
-A complete publication-ready walkthrough is included in [`MEDIUM_ARTICLE.md`](MEDIUM_ARTICLE.md):
-
-[Building a Git and GitHub Workflow from Scratch with WSL 2](MEDIUM_ARTICLE.md)
-
 ## Architecture
 
 ```mermaid
-flowchart LR
-    User["Developer"] --> Terminal["Windows Terminal"]
-    Terminal --> WSL["WSL 2"]
-    WSL --> Ubuntu["Ubuntu 24.04 LTS"]
-    Ubuntu --> Git["Local Git repository"]
-    Git --> SSH["SSH authentication"]
-    SSH --> GitHub["GitHub repository<br/>rester2007/Git-Project-1"]
+graph LR
+    A[Developer] --> B[Windows Terminal]
+    B --> C[WSL 2]
+    C --> D[Ubuntu 24.04 LTS]
+    D --> E[Local Git Repository]
+    E -->|SSH| F[GitHub Repository]
 ```
 
 The complete architecture, trust boundaries, and Git data flow are documented in [`docs/architecture.md`](docs/architecture.md).
@@ -56,7 +49,6 @@ The complete architecture, trust boundaries, and Git data flow are documented in
 ```text
 .
 |-- README.md
-|-- MEDIUM_ARTICLE.md
 |-- file.txt
 `-- docs/
     `-- architecture.md
@@ -247,11 +239,11 @@ The `-u` option records `origin/main` as the upstream for the local `main` branc
 ## Git Data Flow
 
 ```mermaid
-flowchart LR
-    File["Working tree<br/>file.txt"] -->|"git add file.txt"| Index["Staging area<br/>index"]
-    Index -->|"git commit"| Local["Local repository<br/>main"]
-    Local -->|"git push"| Remote["GitHub<br/>origin/main"]
-    Remote -->|"git fetch / git pull"| Local
+graph LR
+    A[Working Tree] -->|git add| B[Staging Area]
+    B -->|git commit| C[Local Repository]
+    C -->|git push| D[GitHub Repository]
+    D -->|git pull| C
 ```
 
 The central lesson is that saving a file, staging a file, committing a file, and pushing a commit are four distinct actions:

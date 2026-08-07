@@ -12,34 +12,16 @@ This is a version-control workflow rather than a deployed application. The archi
 ## System Context
 
 ```mermaid
-flowchart LR
-    Developer["Rester McGlown Jr.<br/>Developer"]
-
-    subgraph Workstation["Windows Workstation"]
-        Terminal["Windows Terminal / PowerShell"]
-
-        subgraph WSL2["WSL 2 Virtualized Linux Environment"]
-            Ubuntu["Ubuntu 24.04 LTS"]
-            Bash["Bash shell"]
-            Git["Git 2.43.0"]
-            Repo["/home/rester/Git-Project-1"]
-            Key["Private SSH key<br/>~/.ssh/id_ed25519"]
-        end
-    end
-
-    subgraph GitHubCloud["GitHub"]
-        PublicKey["Registered public SSH key"]
-        Remote["rester2007/Git-Project-1<br/>origin/main"]
-    end
-
-    Developer --> Terminal
-    Terminal --> Ubuntu
-    Ubuntu --> Bash
-    Bash --> Git
-    Git --> Repo
-    Git -->|"SSH over TCP 22"| Remote
-    Key -->|"proves possession; never transmitted"| Git
-    PublicKey -->|"validates signature"| Remote
+graph LR
+    A[Developer] --> B[Windows Terminal]
+    B --> C[WSL 2]
+    C --> D[Ubuntu 24.04 LTS]
+    D --> E[Bash Shell]
+    E --> F[Git 2.43.0]
+    F --> G[Local Repository]
+    G -->|SSH| H[GitHub Repository]
+    I[Private SSH Key] --> F
+    J[Registered Public Key] --> H
 ```
 
 ## Component Responsibilities
@@ -57,17 +39,15 @@ flowchart LR
 ## Git State Architecture
 
 ```mermaid
-flowchart LR
-    Editor["Shell command or editor"] --> Working["Working tree<br/>file.txt"]
-    Working -->|"git add file.txt"| Index["Staging area<br/>selected snapshot"]
-    Index -->|"git commit"| Objects["Local object database<br/>commit ca38536"]
-    Objects --> Main["Local branch<br/>main"]
-    Main -->|"git push -u origin main"| Origin["Remote branch<br/>origin/main"]
-
-    Working -.->|"git status"| Inspect["State inspection"]
-    Index -.->|"git diff --cached"| Inspect
-    Main -.->|"git log / git rev-parse"| Inspect
-    Origin -.->|"git ls-remote"| Inspect
+graph LR
+    A[Working Tree] -->|git add| B[Staging Area]
+    B -->|git commit| C[Local Commit]
+    C --> D[Local Main Branch]
+    D -->|git push| E[Remote Main Branch]
+    A -.->|git status| F[State Inspection]
+    B -.->|git diff cached| F
+    D -.->|git log| F
+    E -.->|git ls remote| F
 ```
 
 ### State transitions
@@ -82,14 +62,10 @@ flowchart LR
 ## Repository Relationships
 
 ```mermaid
-flowchart TB
-    LocalMain["refs/heads/main<br/>local branch"]
-    RemoteTracking["refs/remotes/origin/main<br/>last observed remote state"]
-    GitHubMain["refs/heads/main<br/>branch on GitHub"]
-
-    LocalMain -->|"git push"| GitHubMain
-    GitHubMain -->|"git fetch"| RemoteTracking
-    RemoteTracking -->|"status comparison"| LocalMain
+graph TB
+    A[Local Main Branch] -->|git push| B[GitHub Main Branch]
+    B -->|git fetch| C[Origin Main Tracking Reference]
+    C -->|git status comparison| A
 ```
 
 `origin/main` inside the local repository is a remote-tracking reference. It is Git's locally stored record of the remote branch as of the last successful network operation. It is not a second live connection to GitHub.
