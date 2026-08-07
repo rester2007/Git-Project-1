@@ -19,8 +19,6 @@ graph LR
     E -->|SSH| F[GitHub Repository]
 ```
 
-The complete environment design, Git state flow, authentication boundary, and design decisions are documented in [`docs/architecture.md`](docs/architecture.md).
-
 ## Technologies Used
 
 - Windows Subsystem for Linux 2 (WSL 2)
